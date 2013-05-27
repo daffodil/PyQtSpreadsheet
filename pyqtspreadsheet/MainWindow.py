@@ -11,9 +11,14 @@ class MainWindow(QtGui.QMainWindow):
         QtGui.QMainWindow.__init__(self)
         
         
-        self.workBooWidget = WorkBookWidget.WorkBookWidget()
-        self.setCentralWidget(self.workBooWidget)
+        self.workBookWidget = WorkBookWidget.WorkBookWidget()
+        self.setCentralWidget(self.workBookWidget)
         
+        
+        self.workBookWidget.loadExcel("/home/pyxl/pyqt-spreadsheet/examples/example-1.xls")
+        
+        
+    def loadDefaults(self):
         for n in range(1, 4):
             self.workBooWidget.addSheet("Sheet %s" % n)
             

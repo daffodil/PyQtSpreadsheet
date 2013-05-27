@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from PyQt4 import QtGui
+from PyQt4 import QtCore, QtGui 
 from PyQt4.QtCore import Qt, SIGNAL
+
+import xlrd
 
 import WorkSheetWidget
 
@@ -34,7 +36,35 @@ class WorkBookWidget(QtGui.QWidget):
         print "TAB"
         self.stack.setCurrentIndex(idx)
      
-    def addSheet(self, title, item=None):
+    
+        
+            
+        
+           
+    
+    def loadExcel(self, file_path): 
+        
+        fi = QtCore.QFileInfo(file_path)
+        print file_path, fi , fi.exists()
+        if not fi.exists():
+            ## TODO - raise warning
+            return
+        wb = xlrd.open_workbook(file_path)
+        
+        for ws in wb.sheets():
+            print "Sheet", ws.name
+            
+            sheet = self.addSheet(ws.name)
+            
+            sheet.setRowCount(ws.nrows)
+            sheet.setColumnCount(ws.ncols)
+            
+            for row in range(ws.nrows):
+                for col in range(ws.ncols):
+                    print row, col, ws.cell(row, col).value
+                    sheet.setCellText(row, col, "%s" % ws.cell(row, col).value )
+                
+    def addSheet(self, title):
         
         # add the tab
         self.tabBar.addTab(title)
@@ -42,9 +72,11 @@ class WorkBookWidget(QtGui.QWidget):
         ## create and add new sheet
         workSheet = WorkSheetWidget.WorkSheetWidget()
         self.stack.addWidget( workSheet )
-           
-    
-    def loadExcel(self, file_path): 
         
-        pass
+        return workSheet
+   
+                
+                   
+        
+        
     

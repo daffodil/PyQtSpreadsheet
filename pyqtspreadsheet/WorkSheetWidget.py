@@ -20,7 +20,14 @@ class WorkSheetWidget(QtGui.QWidget):
         self.table = QtGui.QTableWidget(self)
         self.mainLayout.addWidget(self.table)
         
-        self._setup()
+        #self._setup()
+        
+    def setRowCount(self, rows):
+        self.table.setRowCount(rows)
+        
+    def setColumnCount(self, cols):
+        self.table.setColumnCount(cols)
+        
         
     def _setup(self):
         a2z = [chr(a) for a in range(ord('A'), ord('Z') + 1)]
@@ -31,4 +38,17 @@ class WorkSheetWidget(QtGui.QWidget):
         
         self.table.setRowCount(20)
         
+    def setCellText(self, row, col, txt):
+        print "setCell", row, col, txt
+        item = self.table.item(row, col)
+        if item == None:
+            item = QtGui.QTableWidgetItem()
+            self.table.setItem(row, col, item)
+            #print "stop", ss
+        print item
+        item.setText(txt)
         
+        #workSheet.setExcelCell(row, col, sheet.cell(row, col))
+        
+        
+         
