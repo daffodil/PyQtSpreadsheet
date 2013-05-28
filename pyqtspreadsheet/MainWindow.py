@@ -15,10 +15,10 @@ class MainWindow(QtGui.QMainWindow):
         self.setCentralWidget(self.workBookWidget)
         
         
-        self.workBookWidget.loadExcel("/home/pyxl/pyqt-spreadsheet/examples/example-1.xls")
+        self.workBookWidget.loadExcelFile("/home/pyxl/pyqt-spreadsheet/examples/example-1.xls")
         
         
-    def loadDefaults(self):
+    def DEADloadDefaults(self):
         for n in range(1, 4):
             self.workBooWidget.addSheet("Sheet %s" % n)
             

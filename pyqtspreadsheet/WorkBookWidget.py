@@ -31,6 +31,12 @@ class WorkBookWidget(QtGui.QWidget):
         self.connect(self.tabBar, SIGNAL("currentChanged(int)"), self.on_tab_change)
         
         
+    def initDefaults(self):
+        """This loads the default bog standard sheets, ie Sheet1 - 3"""
+        for i in range(1, 4):
+            sheet = self.addSheet("Sheet %s" % i)
+            sheet.initDefaults()
+            
 
     def on_tab_change(self, idx):
         print "TAB"
@@ -40,19 +46,30 @@ class WorkBookWidget(QtGui.QWidget):
         
             
         
-           
+    def clear(self):
+		while self.tabBar.count() > 0:
+			self.tabBar.removeTab(0)
+			self.stack.removeWidget(self.stack.widget(0))
+			
     
-    def loadExcel(self, file_path): 
+    def loadExcelFile(self, file_path): 
+        
+        self.setUpdatesEnabled(False)
+        self.clear()
+        
         
         fi = QtCore.QFileInfo(file_path)
         print file_path, fi , fi.exists()
         if not fi.exists():
             ## TODO - raise warning
+            self.setUpdatesEnabled(True)
             return
+        
+        ## Open excel workbook
         wb = xlrd.open_workbook(file_path)
         
+        ## add the sheets
         for ws in wb.sheets():
-            print "Sheet", ws.name
             
             sheet = self.addSheet(ws.name)
             
@@ -61,15 +78,18 @@ class WorkBookWidget(QtGui.QWidget):
             
             for row in range(ws.nrows):
                 for col in range(ws.ncols):
-                    print row, col, ws.cell(row, col).value
+            	    ## TODO colors etc
                     sheet.setCellText(row, col, "%s" % ws.cell(row, col).value )
+                    
+        self.setUpdatesEnabled(True)
+        
                 
     def addSheet(self, title):
         
-        # add the tab
+        ## add the tab
         self.tabBar.addTab(title)
         
-        ## create and add new sheet
+        ## create and add new widgets to stack
         workSheet = WorkSheetWidget.WorkSheetWidget()
         self.stack.addWidget( workSheet )
         

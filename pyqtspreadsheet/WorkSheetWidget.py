@@ -29,23 +29,20 @@ class WorkSheetWidget(QtGui.QWidget):
         self.table.setColumnCount(cols)
         
         
-    def _setup(self):
+    def initDefaults(self):
         a2z = [chr(a) for a in range(ord('A'), ord('Z') + 1)]
         self.table.setColumnCount(len(a2z))
-        #for a in range(ord('A'), ord('Z')+1):
-        #print a2z
         self.table.setHorizontalHeaderLabels(a2z)
-        
         self.table.setRowCount(20)
         
     def setCellText(self, row, col, txt):
-        print "setCell", row, col, txt
+       # print "setCell", row, col, txt
         item = self.table.item(row, col)
         if item == None:
             item = QtGui.QTableWidgetItem()
             self.table.setItem(row, col, item)
             #print "stop", ss
-        print item
+        #print item
         item.setText(txt)
         
         #workSheet.setExcelCell(row, col, sheet.cell(row, col))
